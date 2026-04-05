@@ -1,0 +1,135 @@
+{
+  "name": "ghostwriter",
+  "displayName": "ghostwriter",
+  "description": "gw0.5",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "ghostwriter.predict",
+        "title": "GhostWriter: Predict Next Code"
+      },
+      {
+        "command": "ghostwriter.openSettings",
+        "title": "GhostWriter: Open Settings UI"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "ghostwriter.predict",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "GhostWriter Settings",
+      "properties": {
+        "ghostwriter.apiUrl": {
+          "type": "string",
+          "default": "https://api.openai.com/v1",
+          "description": "OpenAI 兼容格式的 API Base URL"
+        },
+        "ghostwriter.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key"
+        },
+        "ghostwriter.model": {
+          "type": "string",
+          "default": "gpt-3.5-turbo",
+          "description": "使用的模型名称"
+        },
+        "ghostwriter.prompt": {
+          "type": "string",
+          "default": "你是一个代码补全助手。请根据提供的代码上下文，直接给出接下来的代码段，不要包含任何解释或 Markdown 格式。",
+          "description": "系统提示词"
+        },
+        "ghostwriter.maxTokens": {
+          "type": "number",
+          "default": 100,
+          "description": "输出最大字数 (Tokens)"
+        },
+        "ghostwriter.charsPerKey": {
+          "type": "number",
+          "default": 1,
+          "description": "每次按下键盘时输出的代码字符数量"
+        },
+        "ghostwriter.enableNaturalRhythm": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用自然打字节奏（模拟人类不均匀的打字速度）"
+        },
+        "ghostwriter.baseDelay": {
+          "type": "number",
+          "default": 80,
+          "description": "基础打字延迟（毫秒），数值越小越快"
+        },
+        "ghostwriter.variance": {
+          "type": "number",
+          "default": 40,
+          "description": "延迟随机波动范围（毫秒）"
+        },
+        "ghostwriter.punctuationSpeed": {
+          "type": "number",
+          "default": 0.5,
+          "description": "标点符号速度倍率（小于1表示更快）"
+        },
+        "ghostwriter.letterVariance": {
+          "type": "number",
+          "default": 20,
+          "description": "字母间额外随机延迟上限（毫秒）"
+        },
+        "ghostwriter.spaceDelay": {
+          "type": "number",
+          "default": 1.5,
+          "description": "空格键延迟倍率（输入空格后的停顿时间）"
+        },
+        "ghostwriter.newlineDelay": {
+          "type": "number",
+          "default": 2.0,
+          "description": "换行延迟倍率（输入换行后的停顿时间）"
+        },
+        "ghostwriter.enableSpaceCollapse": {
+          "type": "boolean",
+          "default": true,
+          "description": "启用空格合并（连续空格一次输出，不逐个空格延迟）"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.103.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.56.1",
+    "eslint": "^9.39.3",
+    "esbuild": "^0.27.3",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
